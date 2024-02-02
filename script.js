@@ -18,6 +18,7 @@ var answerElement = document.getElementById("answer");
 var timerElement = document.getElementById("timer");
 var feedbackElement = document.getElementById("feedback");
 var scoreElement = document.getElementById("score");
+var startElement = document.getElementById("start");
 
 // Generate a random math problem and its answer
 function generateProblem() {
@@ -84,6 +85,9 @@ function startGame() {
     timeLimit +
     " seconds to solve as many problems as you can.<br>Type your answer and press Enter to submit.<br>The faster you answer, the higher the score.<br>Good luck!";
 
+  // Hide the start button
+  startElement.style.display = "none";
+
   // Start the countdown
   var countdown = setInterval(function () {
     // Update the timer
@@ -103,6 +107,9 @@ function startGame() {
       problemElement.innerHTML = "";
       answerElement.value = "";
       answerElement.disabled = true;
+
+      // Show the start button
+      startElement.style.display = "block";
     }
   }, 1000); // 1000 milliseconds = 1 second
 
@@ -161,6 +168,19 @@ function startGame() {
           // Give positive feedback
           feedbackElement.innerHTML = "Correct!";
           scoreElement.innerHTML = "You scored " + points + " points.<br>Your score is " + score + ".";
+
+          // Generate a new problem
+          problem = generateProblem();
+
+          // Display the new problem
+          problemElement.innerHTML = problem.problem;
+
+          // Clear the answer input
+          answerElement.value = "";
+          answerElement.focus();
+
+          // Reset the problem timer
+          problemTimer = problemDuration;
         } else {
           // Give negative feedback
           feedbackElement.innerHTML =
@@ -172,5 +192,8 @@ function startGame() {
   }, problemDuration * 1000); // problemDuration milliseconds
 }
 
-// Run the game
-startGame();
+// Listen for the start button click
+startElement.onclick = function () {
+  // Run the game
+  startGame();
+};
