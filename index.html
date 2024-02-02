@@ -3,6 +3,69 @@
   <head>
     <meta charset="UTF-8" />
     <title>Math Game</title>
+    <style>
+      /* Add some CSS to style the game */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      p {
+        text-align: center;
+        font-size: 18px;
+      }
+
+      #game {
+        width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #fff;
+      }
+
+      #problem {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      #answer {
+        width: 200px;
+        margin: 10px auto;
+        padding: 10px;
+        font-size: 20px;
+        text-align: center;
+        border: 1px solid #ccc;
+      }
+
+      #timer {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        color: #333;
+      }
+
+      #feedback {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        color: #333;
+      }
+
+      #score {
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+        color: #333;
+      }
+    </style>
   </head>
   <body>
     <h1>Math Game</h1>
@@ -11,6 +74,13 @@
       problems are randomly generated and vary in difficulty. You have to type
       the correct answer before the time runs out.
     </p>
+    <div id="game">
+      <div id="problem"></div>
+      <input id="answer" type="number" placeholder="Type your answer" />
+      <div id="timer"></div>
+      <div id="feedback"></div>
+      <div id="score"></div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
