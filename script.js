@@ -8,6 +8,13 @@ var timeLimit = 10;
 // Set the difficulty level from 1 to 5
 var difficulty = 3;
 
+// Get the HTML elements
+var problemElement = document.getElementById("problem");
+var answerElement = document.getElementById("answer");
+var timerElement = document.getElementById("timer");
+var feedbackElement = document.getElementById("feedback");
+var scoreElement = document.getElementById("score");
+
 // Generate a random math problem and its answer
 function generateProblem() {
   // Choose a random operator from +, -, *, /
@@ -68,16 +75,18 @@ function startGame() {
   var timer = timeLimit;
 
   // Display the instructions
-  alert(
-    "Welcome to the math game!\nYou have " +
-      timeLimit +
-      " seconds to solve as many problems as you can.\nType your answer and press OK or Enter to submit.\nGood luck!"
-  );
+  feedbackElement.innerHTML =
+    "Welcome to the math game!<br>You have " +
+    timeLimit +
+    " seconds to solve as many problems as you can.<br>Type your answer and press Enter to submit.<br>Good luck!";
 
   // Start the countdown
   var countdown = setInterval(function () {
     // Update the timer
     timer--;
+
+    // Display the timer
+    timerElement.innerHTML = "Time left: " + timer + "s";
 
     // Check if the time is up
     if (timer == 0) {
@@ -85,7 +94,11 @@ function startGame() {
       clearInterval(countdown);
 
       // End the game and show the score
-      alert("Time's up!\nYour score is " + score + ".");
+      feedbackElement.innerHTML = "Time's up!<br>Your score is " + score + ".";
+      scoreElement.innerHTML = "";
+      problemElement.innerHTML = "";
+      answerElement.value = "";
+      answerElement.disabled = true;
     }
   }, 1000); // 1000 milliseconds = 1 second
 
@@ -94,33 +107,38 @@ function startGame() {
     // Generate a new problem
     var problem = generateProblem();
 
-    // Prompt the user for an answer
-    var userAnswer = prompt(problem.problem + "\nTime left: " + timer + "s");
+    // Display the problem
+    problemElement.innerHTML = problem.problem;
 
-    // Check if the user wants to quit
-    if (userAnswer == null) {
-      // Stop the loop and the countdown
-      clearInterval(loop);
-      clearInterval(countdown);
+    // Clear the answer input
+    answerElement.value = "";
+    answerElement.focus();
 
-      // End the game and show the score
-      alert("You quit the game.\nYour score is " + score + ".");
-    } else {
-      // Check if the user answer is correct
-      if (userAnswer == problem.answer) {
-        // Increase the score
-        score++;
+    // Listen for the user input
+    answerElement.onkeyup = function (event) {
+      // Check if the user pressed Enter
+      if (event.keyCode == 13) {
+        // Get the user answer
+        var userAnswer = answerElement.value;
 
-        // Give positive feedback
-        alert("Correct!\nYour score is " + score + ".");
-      } else {
-        // Give negative feedback
-        alert("Wrong!\nThe correct answer is " + problem.answer + ".");
+        // Check if the user answer is correct
+        if (userAnswer == problem.answer) {
+          // Increase the score
+          score++;
+
+          // Give positive feedback
+          feedbackElement.innerHTML = "Correct!";
+          scoreElement.innerHTML = "Your score is " + score + ".";
+        } else {
+          // Give negative feedback
+          feedbackElement.innerHTML =
+            "Wrong!<br>The correct answer is " + problem.answer + ".";
+          scoreElement.innerHTML = "";
+        }
       }
-    }
+    };
   }, 0); // 0 milliseconds = as fast as possible
 }
 
 // Run the game
 startGame();
-      
