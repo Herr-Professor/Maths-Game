@@ -104,6 +104,8 @@ function startGame() {
 
   // Start the loop
   var loop = setInterval(function () {
+  setTimeout(function () {
+
     // Generate a new problem
     var problem = generateProblem();
 
@@ -137,8 +139,8 @@ function startGame() {
         }
       }
     };
-  }, 0); // 0 milliseconds = as fast as possible
-}
-
+  }, 1000); // 0 milliseconds = as fast as possible
+}, 0);
+},
 // Run the game
 startGame();
