@@ -141,6 +141,7 @@ function startGame() {
     };
   }, 1000); // 0 milliseconds = as fast as possible
 }, 0);
-},
+}
+
 // Run the game
 startGame();
