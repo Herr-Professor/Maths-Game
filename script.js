@@ -1,9 +1,13 @@
 // A game where you have to solve math problems in a limited time
 // The problems are randomly generated and vary in difficulty
 // You have to type the correct answer before the time runs out
+// The faster you answer, the higher the score
 
 // Set the time limit in seconds
-var timeLimit = 10;
+var timeLimit = 60;
+
+// Set the problem duration in seconds
+var problemDuration = 5;
 
 // Set the difficulty level from 1 to 5
 var difficulty = 3;
@@ -78,7 +82,7 @@ function startGame() {
   feedbackElement.innerHTML =
     "Welcome to the math game!<br>You have " +
     timeLimit +
-    " seconds to solve as many problems as you can.<br>Type your answer and press Enter to submit.<br>Good luck!";
+    " seconds to solve as many problems as you can.<br>Type your answer and press Enter to submit.<br>The faster you answer, the higher the score.<br>Good luck!";
 
   // Start the countdown
   var countdown = setInterval(function () {
@@ -104,8 +108,6 @@ function startGame() {
 
   // Start the loop
   var loop = setInterval(function () {
-  setTimeout(function () {
-
     // Generate a new problem
     var problem = generateProblem();
 
@@ -116,21 +118,49 @@ function startGame() {
     answerElement.value = "";
     answerElement.focus();
 
+    // Set the problem timer
+    var problemTimer = problemDuration;
+
+    // Start the problem countdown
+    var problemCountdown = setInterval(function () {
+      // Update the problem timer
+      problemTimer--;
+
+      // Check if the problem time is up
+      if (problemTimer == 0) {
+        // Stop the problem countdown
+        clearInterval(problemCountdown);
+
+        // Give negative feedback
+        feedbackElement.innerHTML =
+          "Time's up for this problem!<br>The correct answer is " +
+          problem.answer +
+          ".";
+        scoreElement.innerHTML = "";
+      }
+    }, 1000); // 1000 milliseconds = 1 second
+
     // Listen for the user input
     answerElement.onkeyup = function (event) {
       // Check if the user pressed Enter
       if (event.keyCode == 13) {
+        // Stop the problem countdown
+        clearInterval(problemCountdown);
+
         // Get the user answer
         var userAnswer = answerElement.value;
 
         // Check if the user answer is correct
         if (userAnswer == problem.answer) {
+          // Calculate the score based on the problem timer
+          var points = problemTimer;
+
           // Increase the score
-          score++;
+          score += points;
 
           // Give positive feedback
           feedbackElement.innerHTML = "Correct!";
-          scoreElement.innerHTML = "Your score is " + score + ".";
+          scoreElement.innerHTML = "You scored " + points + " points.<br>Your score is " + score + ".";
         } else {
           // Give negative feedback
           feedbackElement.innerHTML =
@@ -139,8 +169,7 @@ function startGame() {
         }
       }
     };
-  }, 1000); // 0 milliseconds = as fast as possible
-}, 0);
+  }, problemDuration * 1000); // problemDuration milliseconds
 }
 
 // Run the game
